@@ -24,7 +24,6 @@ def get_video_links(p_archive_url):
 	""" Obtains the video links within the url provided """
 	
 	# create response object
-	# v_r = requests.get("http://www-personal.umich.edu/~csev/books/py4inf/media/")
 	v_r = requests.get(p_archive_url)
 
 	# create beautiful-soup object
@@ -34,8 +33,8 @@ def get_video_links(p_archive_url):
 	v_links = v_soup.findAll('a')
 
 	# filter the link sending with .mp4
-	v_video_links = [p_archive_url + link['href']
-                for link in v_links if link['href'].endswith('mp4')]
+	v_video_links = [p_archive_url + link["href"]
+                for link in v_links if link["href"].endswith("mp4")]
 
 	return v_video_links
 
