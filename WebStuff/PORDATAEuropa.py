@@ -331,6 +331,7 @@ def main():
 
     p = PORDATAEuropa("https://www.pordata.pt/Europa/Quadro+Resumo/Alemanha-230971")
 
+
     v_raw_site_content = p.get_raw_site_content()
 
     v_data_content = p.get_data_content(v_raw_site_content, "table", "id", "QrTable")
