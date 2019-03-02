@@ -49,10 +49,6 @@ from collections import OrderedDict
 class PORDATAEuropa(object):
 
 
-    mtrx_anos = []
-    mtrx_paises = []
-
-
     def __init__(self, p_url):
         """Iniciação da classe."""
         self.reset(p_url)
@@ -63,6 +59,7 @@ class PORDATAEuropa(object):
         self.url = p_url
         self.mtrx_anos = []
         self.mtrx_paises = []
+        self.mtrx_dados = []
 
 
     def get_raw_site_content(self):
@@ -133,20 +130,22 @@ class PORDATAEuropa(object):
         v_tr = None
         v_td = None
 
-        # Get the html "thead" code
+        # Get the html "TBODY" code
         v_tbody = p_data_content.findAll("tbody")
 
-        # Get the list od all "TR"sGet the "thead" "tr"'s
+        # Get the list of rows "TR"
         v_tr = v_tbody[0].findAll("tr")
 
         v_aux_values = []
 
+        # For each row "TR"
         for v_aux_tr in v_tr:
-            # For each
+            # Get the list of row columns "TD"
             v_td = v_aux_tr.findAll("td")
 
             v_aux_values = []
 
+            # For each column "TD"
             for v_aux_td in v_td:
                 xpto = 0
 
@@ -156,7 +155,7 @@ class PORDATAEuropa(object):
 
 
         for v_elem in v_td:
-            if repr(v_elem.attrs['class']).replace("[","").replace("]","").replace("'","") == "QrHeaderYear":
+            if repr(v_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderYear":
                 self.mtrx_anos.append(v_elem.string)
 
         v_aux_paises = []   # array auxiliar de paises
@@ -165,11 +164,11 @@ class PORDATAEuropa(object):
         v_td = v_tr[1].findAll("td")
 
         for v_elem in v_td:
-            if repr(v_elem.attrs['class']).replace("[","").replace("]","").replace("'","") == "QrHeaderTerritory":
+            if repr(v_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderTerritory":
                 v_aux_paises.append(v_elem.string)   # adiciona o pais ao array auxiliar...
 
             # Grupo de paises terminou
-            if repr(v_elem.attrs['class']).replace("[","").replace("]","").replace("'","") == "QrHeaderEmptyYearSeparator":
+            if repr(v_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderEmptyYearSeparator":
                 self.mtrx_paises.append(v_aux_paises)         # adiciona a lista auxiliar de paises a lista de paises
                 v_aux_paises = []                        # reset do array auxiliar de paises
 
@@ -330,7 +329,6 @@ def main():
     os.system('cls')
 
     p = PORDATAEuropa("https://www.pordata.pt/Europa/Quadro+Resumo/Alemanha-230971")
-
 
     v_raw_site_content = p.get_raw_site_content()
 
