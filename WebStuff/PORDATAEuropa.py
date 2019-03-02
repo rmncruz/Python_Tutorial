@@ -180,7 +180,7 @@ class PORDATAEuropa(object):
         return
 
 
-    def store_data_content(p_data_content):
+    def store_data_content(self, p_data_content):
         """."""
         return
 

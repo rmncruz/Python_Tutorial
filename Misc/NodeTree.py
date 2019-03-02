@@ -83,9 +83,7 @@ class NodeTree(object):
 
 
     def updateBalance(self, p_node):
-
-
-
+        return
 
 
     def findData(self, p_data):
