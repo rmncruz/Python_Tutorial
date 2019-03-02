@@ -54,6 +54,7 @@ class PORDATAEuropa(object):
         self.reset(p_url)
 
 
+
     def reset(self, p_url):
         """Reset dos valores."""
         self.url = p_url
@@ -62,11 +63,13 @@ class PORDATAEuropa(object):
         self.mtrx_dados = []
 
 
+
     def get_raw_site_content(self):
         """create response object"""
         v_raw_site_content = requests.get(self.url)
 
         return v_raw_site_content
+
 
 
     def get_data_content(self, p_site_content, p_htmv_element, p_element_tag, p_element_tag_value):
@@ -83,6 +86,7 @@ class PORDATAEuropa(object):
             v_table = v_soup.find( p_htmv_element, { p_element_tag : p_element_tag_value })
         
         return v_table
+
 
 
     def transform_table_header_content(self, p_data_content):
@@ -122,6 +126,7 @@ class PORDATAEuropa(object):
         self.mtrx_paises.append(v_aux_paises)
 
         return
+
 
 
     def transform_table_data_content(self, p_data_content):
