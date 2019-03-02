@@ -91,7 +91,7 @@ class NodeTree(object):
     def findData(self, p_data):
         """Searchs the node tree for the indicated value.
            It assumes that the node tree values are ordered..."""
-        l_found = False
+        v_found = False
 
         if self.data is None:
 
@@ -111,10 +111,10 @@ class NodeTree(object):
                 else:
                     print("Value", p_data, "NOT FOUND!!")
             else:
-                l_found = True
+                v_found = True
                 print("Value", p_data, "FOUND!!")
            
-        return l_found
+        return v_found
 
 
     def printTree(self):
