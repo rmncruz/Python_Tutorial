@@ -48,15 +48,16 @@ from collections import OrderedDict
 
 class PORDATAEuropa(object):
 
-
+    # Class initialization
     def __init__(self, p_url):
-        """Iniciação da classe."""
+        """Class initialization."""
         self.reset(p_url)
 
 
 
+    # Class variables/objects reset
     def reset(self, p_url):
-        """Reset dos valores."""
+        """Class variables/objects reset."""
         self.url = p_url
         self.mtrx_anos = []
         self.mtrx_paises = []
@@ -64,14 +65,16 @@ class PORDATAEuropa(object):
 
 
 
+    # Create web response object
     def get_raw_site_content(self):
-        """create response object"""
+        """create web response object."""
         v_raw_site_content = requests.get(self.url)
 
         return v_raw_site_content
 
 
 
+    # 
     def get_data_content(self, p_site_content, p_htmv_element, p_element_tag, p_element_tag_value):
         """."""
         # create beautiful-soup object
@@ -89,6 +92,7 @@ class PORDATAEuropa(object):
 
 
 
+    # 
     def transform_table_header_content(self, p_data_content):
         """."""
         v_thead = None
@@ -129,6 +133,7 @@ class PORDATAEuropa(object):
 
 
 
+    # 
     def transform_table_data_content(self, p_data_content):
         """."""
         v_tbody = None
@@ -202,6 +207,8 @@ all the links and then download videos.
 archive_url = "http://www-personal.umich.edu/~csev/books/py4inf/media/"
 
 
+
+# Obtains the video links within the url provided
 def get_web_links(p_archive_url, p_link_extension):
 	""" Obtains the video links within the url provided """
 	# create response object
@@ -222,6 +229,7 @@ def get_web_links(p_archive_url, p_link_extension):
 
 
 
+# Iterate through all links in video_links and download them one by one
 def download_video_series(video_links):
 	"""iterate through all links in video_links and download them one by one"""
 
@@ -233,6 +241,7 @@ def download_video_series(video_links):
 
 
 
+# Downloads the indicated video
 def download_video(p_link):
 	""" Downloads the indicated video """
 
@@ -274,6 +283,8 @@ def download_video(p_link):
 
 
 
+# Removes the duplicated values from the provided list.
+# The output list values order might not be the same as the provided list values order
 def remove_duplicated_values(p_originav_list):
     """ Removes the duplicated values from the provided list.
 	    The output list values order might not be the same as the provided list values order """
@@ -283,6 +294,7 @@ def remove_duplicated_values(p_originav_list):
 
 
 
+# Prints the download related information
 def display_download_info(p_file_name, p_content_length, p_chunk_sum, p_start_time):
     """ Prints the download related information """
 
@@ -314,6 +326,7 @@ def display_download_info(p_file_name, p_content_length, p_chunk_sum, p_start_ti
     return
 
 
+
 # if __name__ == "__main__":
 #
 # 	# sys.stdout.write("Hello World!")
@@ -328,6 +341,8 @@ def display_download_info(p_file_name, p_content_length, p_chunk_sum, p_start_ti
 # 	download_video_series(v_video_links2)
 
 
+
+# Main method...
 def main():
     """."""
 
