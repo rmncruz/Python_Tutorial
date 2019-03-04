@@ -4,6 +4,7 @@ import datetime
 import os
 import requests
 import sys
+import urllib3
 from bs4 import BeautifulSoup
 from collections import OrderedDict
 
@@ -75,7 +76,7 @@ class PORDATAEuropa(object):
 
 
     # 
-    def get_data_content(self, p_site_content, p_htmv_element, p_element_tag, p_element_tag_value):
+    def get_data_content(self, p_site_content, p_html_element, p_element_tag, p_element_tag_value):
         """."""
         # create beautiful-soup object
         v_soup = BeautifulSoup(p_site_content.content, 'html5lib')
@@ -84,11 +85,20 @@ class PORDATAEuropa(object):
         # v_table = soup.find( "table", { "id" : "QrTable" })
         # If no "p_element_tag" and no "p_element_tag_value" (both not empty)
         if not p_element_tag and not p_element_tag_value:
-            v_table = v_soup.findAll( p_htmv_element )
+            v_table = v_soup.findAll( p_html_element )
         else:
-            v_table = v_soup.find( p_htmv_element, { p_element_tag : p_element_tag_value })
+            v_table = v_soup.find( p_html_element, { p_element_tag : p_element_tag_value })
         
         return v_table
+
+
+
+    # 
+    def get_data_attribute(self, p_data_content, p_element_attr):
+        """."""
+        v_data_attribute = p_data_content.attrs[p_element_attr]
+        
+        return v_data_attribute
 
 
 
@@ -348,11 +358,18 @@ def main():
 
     os.system('cls')
 
-    p = PORDATAEuropa("https://www.pordata.pt/Europa/Quadro+Resumo/Alemanha-230971")
+    # RC 20190304 p = PORDATAEuropa("https://www.pordata.pt/Europa/Quadro+Resumo/Alemanha-230971")
+    p = PORDATAEuropa("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0")
+
 
     v_raw_site_content = p.get_raw_site_content()
 
-    v_data_content = p.get_data_content(v_raw_site_content, "table", "id", "QrTable")
+    # RC 20190304 v_data_content = p.get_data_content(v_raw_site_content, "table", "id", "QrTable")
+    # Get the "IFRAME" object...
+    v_data_content = p.get_data_content(v_raw_site_content, "iframe", None, None)
+
+    # Get the "IFRAME" source...
+    v_data_element = p.get_data_attribute(v_data_content[0], "src")
 
     p.transform_table_header_content(v_data_content)
 
