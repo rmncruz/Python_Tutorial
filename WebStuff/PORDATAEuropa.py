@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 from collections import OrderedDict
 
 from selenium import webdriver
-
+from selenium.webdriver.chrome.options import Options
 
 
 # EUROPA
@@ -360,8 +360,11 @@ def main():
     os.system('cls')
 
 
-    v_driver = webdriver.Firefox(executable_path="/Users/rcruz/Development/Tools/PythonTools/geckodriver")
-    v_driver = webdriver.Chrome(executable_path="/Users/rcruz/Development/Tools/PythonTools/chromedriver")
+    v_options = Options()
+    v_options.add_argument("Headless")
+    v_options.add_argument("window-size=1200x600")   # Optional
+    # v_driver = webdriver.Firefox(executable_path="/Users/rcruz/Development/Tools/PythonTools/geckodriver")
+    v_driver = webdriver.Chrome(executable_path="/Users/rcruz/Development/Tools/PythonTools/chromedriver", options=v_options)
     v_driver.maximize_window()
     v_driver.get("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0")
     # Get list of iframes present on the web page
