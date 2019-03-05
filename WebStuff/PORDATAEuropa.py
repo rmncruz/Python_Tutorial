@@ -8,6 +8,7 @@ import urllib3
 from bs4 import BeautifulSoup
 from collections import OrderedDict
 
+from selenium import webdriver
 
 
 
@@ -27,10 +28,10 @@ from collections import OrderedDict
 # https://www.pordata.pt/Europa/Quadro+Resumo/Fran%C3%A7a-230983
 # https://www.pordata.pt/Europa/Quadro+Resumo/Gr%C3%A9cia-230984
 # https://www.pordata.pt/Europa/Quadro+Resumo/Hungria-230985
-# https://www.pordata.pt/Europa/Quadro+Resumo/Irlanda-230986
 # https://www.pordata.pt/Europa/Quadro+Resumo/It%C3%A1lia-230988
-# https://www.pordata.pt/Europa/Quadro+Resumo/Let%C3%B3nia-230990
+# https://www.pordata.pt/Europa/Quadro+Resumo/Irlanda-230986
 # https://www.pordata.pt/Europa/Quadro+Resumo/Litu%C3%A2nia-230991
+# https://www.pordata.pt/Europa/Quadro+Resumo/Let%C3%B3nia-230990
 # https://www.pordata.pt/Europa/Quadro+Resumo/Luxemburgo-230992
 # https://www.pordata.pt/Europa/Quadro+Resumo/Malta-230993
 # https://www.pordata.pt/Europa/Quadro+Resumo/Pa%C3%ADses+Baixos-230996
@@ -358,6 +359,18 @@ def main():
 
     os.system('cls')
 
+
+    v_driver = webdriver.Firefox(executable_path="/Users/rcruz/Development/Tools/PythonTools/geckodriver")
+    v_driver = webdriver.Chrome(executable_path="/Users/rcruz/Development/Tools/PythonTools/chromedriver")
+    v_driver.maximize_window()
+    v_driver.get("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0")
+    # Get list of iframes present on the web page
+    v_iframes = v_driver.find_element_by_tag_name("iframe")
+
+
+
+
+
     # RC 20190304 p = PORDATAEuropa("https://www.pordata.pt/Europa/Quadro+Resumo/Alemanha-230971")
     p = PORDATAEuropa("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0")
 
@@ -369,7 +382,10 @@ def main():
     v_data_content = p.get_data_content(v_raw_site_content, "iframe", None, None)
 
     # Get the "IFRAME" source...
-    v_data_element = p.get_data_attribute(v_data_content[0], "src")
+    v_iframe_element = p.get_data_attribute(v_data_content[0], "src")
+
+    # v_iframe_response = urllib3.urlopen(v_iframe_element)
+    # iframe_soup = BeautifulSoup(v_iframe_response)
 
     p.transform_table_header_content(v_data_content)
 
