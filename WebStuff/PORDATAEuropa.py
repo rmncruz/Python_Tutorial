@@ -11,6 +11,8 @@ from collections import OrderedDict
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait as wait
 
 # EUROPA
 # https://www.pordata.pt/Europa/Quadro+Resumo/Alemanha-230971
@@ -359,16 +361,26 @@ def main():
 
     os.system('cls')
 
-
     v_options = Options()
-    v_options.add_argument("Headless")
-    v_options.add_argument("window-size=1200x600")   # Optional
+    # v_options.add_argument("--headless")   # "--headless" don't open the chrome web browser...
+    
     # v_driver = webdriver.Firefox(executable_path="/Users/rcruz/Development/Tools/PythonTools/geckodriver")
     v_driver = webdriver.Chrome(executable_path="/Users/rcruz/Development/Tools/PythonTools/chromedriver", options=v_options)
-    v_driver.maximize_window()
+    
+    # Give time for iframe to load...
+    # time.sleep(3)
+    
+    # v_driver.maximize_window()
+
     v_driver.get("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0")
+
+    wait(v_driver, 10).until(EC.frame_to_be_available_and_switch_to_it(v_driver.find_element_by_xpath("//iframe")))
+
+    # Switch to the iframe
+#    v_driver.switch_to.frame(v_driver.find_element_by_tag_name("iframe"))
+
     # Get list of iframes present on the web page
-    v_iframes = v_driver.find_element_by_tag_name("iframe")
+ #   v_iframes = v_driver.find_element_by_tag_name("iframe")
 
 
 
