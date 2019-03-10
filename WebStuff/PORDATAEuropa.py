@@ -369,16 +369,11 @@ def main():
 
     # Give time for iframe to load...
     v_driver.implicitly_wait(30)
-    # time.sleep(3)    
 
     # v_driver.maximize_window()
 
+    # Get the URL content
     v_driver.get("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0&xlang=pt")
-
-#    wait(v_driver, 10).until(EC.frame_to_be_available_and_switch_to_it(v_driver.find_element_by_xpath("//iframe")))
-
-    # Switch to the iframe
-#    v_driver.switch_to.frame(v_driver.find_element_by_tag_name("iframe"))
 
     # Get list of iframes present on the web page
     v_iframes = v_driver.find_elements_by_tag_name("iframe")
@@ -386,6 +381,7 @@ def main():
     # Flag to identify if the desired "iframe" was found or not
     v_found = False
 
+    # Search each iframe for the identified iframe 
     for l_iframe in v_iframes:
         v_driver.switch_to_frame(l_iframe)
         # If id "frmIndicador" exists then we are at the desired iframe
@@ -396,6 +392,7 @@ def main():
                 v_found = True
                 v_bs_content = BeautifulSoup(v_driver.page_source, "html5lib") # "lxml")
         except:
+            # Empty statement
             pass
         v_driver.switch_to_default_content()
 
