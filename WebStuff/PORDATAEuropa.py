@@ -375,7 +375,7 @@ def main():
 
     v_driver.get("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0&xlang=pt")
 
-    wait(v_driver, 10).until(EC.frame_to_be_available_and_switch_to_it(v_driver.find_element_by_xpath("//iframe")))
+#    wait(v_driver, 10).until(EC.frame_to_be_available_and_switch_to_it(v_driver.find_element_by_xpath("//iframe")))
 
     # Switch to the iframe
 #    v_driver.switch_to.frame(v_driver.find_element_by_tag_name("iframe"))
@@ -384,7 +384,7 @@ def main():
 #    v_iframes = v_driver.find_element_by_tag_name("iframe")
 
 
-    v_bs_content = BeautifulSoup(v_driver.page_source, "lxml")
+    v_bs_content = BeautifulSoup(v_driver.page_source, "html5lib") # "lxml")
 
 
 
