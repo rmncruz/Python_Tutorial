@@ -368,11 +368,12 @@ def main():
     v_driver = webdriver.Chrome(executable_path="/Users/rcruz/Development/Tools/PythonTools/chromedriver", options=v_options)
     
     # Give time for iframe to load...
+    v_driver.implicitly_wait(30)
     # time.sleep(3)
     
     # v_driver.maximize_window()
 
-    v_driver.get("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0")
+    v_driver.get("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0&xlang=pt")
 
     wait(v_driver, 10).until(EC.frame_to_be_available_and_switch_to_it(v_driver.find_element_by_xpath("//iframe")))
 
@@ -380,14 +381,17 @@ def main():
 #    v_driver.switch_to.frame(v_driver.find_element_by_tag_name("iframe"))
 
     # Get list of iframes present on the web page
- #   v_iframes = v_driver.find_element_by_tag_name("iframe")
+#    v_iframes = v_driver.find_element_by_tag_name("iframe")
+
+
+    v_bs_content = BeautifulSoup(v_driver.page_source, "lxml")
 
 
 
 
 
     # RC 20190304 p = PORDATAEuropa("https://www.pordata.pt/Europa/Quadro+Resumo/Alemanha-230971")
-    p = PORDATAEuropa("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0")
+    p = PORDATAEuropa("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0&xlang=pt")
 
 
     v_raw_site_content = p.get_raw_site_content()
