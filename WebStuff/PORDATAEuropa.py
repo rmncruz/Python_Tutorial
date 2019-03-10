@@ -121,21 +121,21 @@ class PORDATAEuropa(object):
         # linha dos anos (v_tr[0])
         v_td = v_tr[0].findAll("td")
 
-        for v_elem in v_td:
-            if repr(v_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderYear":
-                self.mtrx_anos.append(v_elem.string)
+        for l_elem in v_td:
+            if repr(l_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderYear":
+                self.mtrx_anos.append(l_elem.string)
 
         v_aux_paises = []   # array auxiliar de paises
 
         # linha dos paises (v_tr[0])
         v_td = v_tr[1].findAll("td")
 
-        for v_elem in v_td:
-            if repr(v_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderTerritory":
-                v_aux_paises.append(v_elem.string)   # adiciona o pais ao array auxiliar...
+        for l_elem in v_td:
+            if repr(l_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderTerritory":
+                v_aux_paises.append(l_elem.string)   # adiciona o pais ao array auxiliar...
 
             # Grupo de paises terminou
-            if repr(v_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderEmptyYearSeparator":
+            if repr(l_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderEmptyYearSeparator":
                 self.mtrx_paises.append(v_aux_paises)         # adiciona a lista auxiliar de paises a lista de paises
                 v_aux_paises = []                        # reset do array auxiliar de paises
 
@@ -177,21 +177,21 @@ class PORDATAEuropa(object):
 
 
 
-        for v_elem in v_td:
-            if repr(v_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderYear":
-                self.mtrx_anos.append(v_elem.string)
+        for l_elem in v_td:
+            if repr(l_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderYear":
+                self.mtrx_anos.append(l_elem.string)
 
         v_aux_paises = []   # array auxiliar de paises
 
         # linha dos paises (v_tr[0])
         v_td = v_tr[1].findAll("td")
 
-        for v_elem in v_td:
-            if repr(v_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderTerritory":
-                v_aux_paises.append(v_elem.string)   # adiciona o pais ao array auxiliar...
+        for l_elem in v_td:
+            if repr(l_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderTerritory":
+                v_aux_paises.append(l_elem.string)   # adiciona o pais ao array auxiliar...
 
             # Grupo de paises terminou
-            if repr(v_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderEmptyYearSeparator":
+            if repr(l_elem.attrs["class"]).replace("[","").replace("]","").replace("'","") == "QrHeaderEmptyYearSeparator":
                 self.mtrx_paises.append(v_aux_paises)         # adiciona a lista auxiliar de paises a lista de paises
                 v_aux_paises = []                        # reset do array auxiliar de paises
 
@@ -366,11 +366,11 @@ def main():
     
     # v_driver = webdriver.Firefox(executable_path="/Users/rcruz/Development/Tools/PythonTools/geckodriver")
     v_driver = webdriver.Chrome(executable_path="/Users/rcruz/Development/Tools/PythonTools/chromedriver", options=v_options)
-    
+
     # Give time for iframe to load...
     v_driver.implicitly_wait(30)
-    # time.sleep(3)
-    
+    # time.sleep(3)    
+
     # v_driver.maximize_window()
 
     v_driver.get("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0&xlang=pt")
@@ -381,10 +381,29 @@ def main():
 #    v_driver.switch_to.frame(v_driver.find_element_by_tag_name("iframe"))
 
     # Get list of iframes present on the web page
-#    v_iframes = v_driver.find_element_by_tag_name("iframe")
+    v_iframes = v_driver.find_elements_by_tag_name("iframe")
+
+    # Flag to identify if the desired "iframe" was found or not
+    v_found = False
+
+    for l_iframe in v_iframes:
+        v_driver.switch_to_frame(l_iframe)
+        # If id "frmIndicador" exists then we are at the desired iframe
+        try:
+            l_form = v_driver.find_element_by_id("frmIndicador")
+            if l_form:
+                print("Encontramos o IFRAME!!!")
+                v_found = True
+                v_bs_content = BeautifulSoup(v_driver.page_source, "html5lib") # "lxml")
+        except:
+            pass
+        v_driver.switch_to_default_content()
 
 
-    v_bs_content = BeautifulSoup(v_driver.page_source, "html5lib") # "lxml")
+
+
+
+
 
 
 
