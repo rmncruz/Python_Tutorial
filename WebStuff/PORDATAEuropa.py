@@ -355,11 +355,81 @@ def display_download_info(p_file_name, p_content_length, p_chunk_sum, p_start_ti
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+# Import the module to work with "robots.txt" file...
+# The following modules don't work very well with 
+# DEBENHAMS robots.txt, because the robots content contains 
+# blank lines... and according to "http://www.robotstxt.org/robotstxt.html"
+# blank lines should not exist and regular expressions should not be used
+# within the robots content
+# The best module to parse the robots file has been reppy...
+# from urllib import robotparser
+# import robotexclusionrulesparser
+from reppy import Robots
+
+
+
 # Main method...
 def main():
     """."""
 
     os.system('cls')
+
+    v_url = "https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0&xlang=pt"
+    v_url = "https://www.debenhams.com/"
+    # v_url = "https://www.dialaphone.co.uk/"
+    # v_url = "http://www.udacity-forums.com/"
+
+
+
+
+
+
+    # Creates the "robot" object...
+    #
+    # In case of exception "urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed" when reading the file... execute the following command in a terminal
+    # sudo /Applications/Python\ 3.7/Install\ Certificates.command 
+    #
+    
+    # v_robot_parser = robotparser.RobotFileParser()
+    # v_robot_parser.set_url(v_url + "robots.txt")
+    # v_robot_parser.read()
+
+    # Set a robot parser using "robotexclusionrulesparser"
+    # v_robot = robotexclusionrulesparser.RobotExclusionRulesParser()
+    
+    # Optional - Set the user agent...
+    # v_robot.user_agent = "userXpto"
+
+    # v_robot.fetch(v_url + "robots.txt")
+
+    
+    v_robot_parser = Robots.fetch(v_url + "robots.txt")
+    v_url_final = v_url + "rui?storeId=10052"
+    if v_robot_parser.allowed(v_url_final, "*"):
+        # if v_robot.is_allowed("*", v_url_final ):
+        print("YES! We can do it!")
+    else:
+        print("Sorry! No can do!")
+
+
+
+
+
+
+
+
 
     v_options = Options()
     # v_options.add_argument("--headless")   # "--headless" don't open the chrome web browser...
@@ -373,7 +443,24 @@ def main():
     # v_driver.maximize_window()
 
     # Get the URL content
-    v_driver.get("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&contecto=pi&indOcorrCod=0008235&selTab=tab0&xlang=pt")
+
+    v_url_final = v_url + 'rui/page.php'
+    if v_robot_parser.can_fetch('*', v_url_final ):
+        print("YES! We can do it!")
+        v_driver.get(v_url)
+    else:
+        print("Sorry! No can do!")
+
+
+
+
+
+
+
+
+
+
+    v_bs_content = BeautifulSoup(v_driver.page_source, "html.parser") # "html5lib")
 
     # Get list of iframes present on the web page
     v_iframes = v_driver.find_elements_by_tag_name("iframe")
@@ -390,11 +477,25 @@ def main():
             if l_form:
                 print("Encontramos o IFRAME!!!")
                 v_found = True
-                v_bs_content = BeautifulSoup(v_driver.page_source, "html5lib") # "lxml")
+                v_bs_content = BeautifulSoup(v_driver.page_source, "html.parser") # "html5lib") # "lxml")
         except:
             # Empty statement
             pass
         v_driver.switch_to_default_content()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
